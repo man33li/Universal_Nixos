@@ -1,6 +1,7 @@
 { lib, config, ... }:
 let
   cfg = config.universal.desktop;
+  isEfi = builtins.pathExists "/sys/firmware/efi";
 in
 {
   options.universal.desktop.gpuVendor = lib.mkOption {
@@ -13,9 +14,10 @@ in
     {
       boot.loader.systemd-boot.enable = lib.mkForce false;
       boot.loader.grub.enable = true;
-      boot.loader.grub.efiSupport = true;
-      boot.loader.grub.device = "nodev";
+      boot.loader.grub.efiSupport = lib.mkDefault isEfi;
+      boot.loader.grub.device = lib.mkDefault (if isEfi then "nodev" else "/dev/sda");
       boot.loader.grub.useOSProber = true;
+      boot.loader.efi.canTouchEfiVariables = lib.mkDefault isEfi;
     }
 
     (lib.mkIf (cfg.gpuVendor == "nvidia") {
