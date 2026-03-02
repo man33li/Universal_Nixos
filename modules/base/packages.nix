@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-unstable, ... }:
+let
+  quickshellPkg = if pkgs ? quickshell then pkgs.quickshell else pkgs-unstable.quickshell;
+in
 {
   environment.systemPackages = with pkgs; [
     anyrun
@@ -13,7 +16,7 @@
     lm_sensors
     niri
     pciutils
-    quickshell
+    quickshellPkg
     usbutils
     vim
     wget

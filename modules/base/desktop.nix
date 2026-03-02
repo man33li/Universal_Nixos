@@ -1,6 +1,7 @@
-{ pkgs, config, ... }:
+{ pkgs, pkgs-unstable, config, ... }:
 let
   user = config.universal.user.name;
+  quickshellPkg = if pkgs ? quickshell then pkgs.quickshell else pkgs-unstable.quickshell;
 in
 {
   services.xserver.enable = true;
@@ -76,11 +77,11 @@ in
     wantedBy = [ "graphical-session.target" ];
     partOf = [ "graphical-session.target" ];
     serviceConfig = {
-      ExecStart = "${pkgs.quickshell}/bin/qs";
+      ExecStart = "${quickshellPkg}/bin/qs";
       Restart = "on-failure";
       RestartSec = 2;
       Environment = [
-        "QML2_IMPORT_PATH=${pkgs.quickshell}/lib/qt-6/qml:${pkgs.qt6.qtdeclarative}/lib/qt-6/qml"
+        "QML2_IMPORT_PATH=${quickshellPkg}/lib/qt-6/qml:${pkgs.qt6.qtdeclarative}/lib/qt-6/qml"
       ];
     };
   };
