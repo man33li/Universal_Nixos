@@ -14,9 +14,10 @@ in
     {
       boot.loader.systemd-boot.enable = lib.mkForce false;
       boot.loader.grub.enable = true;
-      boot.loader.grub.efiSupport = lib.mkDefault isEfi;
-      boot.loader.grub.device = lib.mkDefault (if isEfi then "nodev" else "/dev/sda");
-      boot.loader.grub.useOSProber = true;
+      boot.loader.grub.efiSupport = lib.mkForce true;
+      boot.loader.grub.device = lib.mkForce "nodev";
+      boot.loader.grub.efiInstallAsRemovable = lib.mkDefault true;
+      boot.loader.grub.useOSProber = lib.mkDefault false;
       boot.loader.efi.canTouchEfiVariables = lib.mkForce isEfi;
     }
 
