@@ -17,7 +17,7 @@ in
       boot.loader.grub.efiSupport = lib.mkDefault isEfi;
       boot.loader.grub.device = lib.mkDefault (if isEfi then "nodev" else "/dev/sda");
       boot.loader.grub.useOSProber = true;
-      boot.loader.efi.canTouchEfiVariables = lib.mkDefault isEfi;
+      boot.loader.efi.canTouchEfiVariables = lib.mkForce isEfi;
     }
 
     (lib.mkIf (cfg.gpuVendor == "nvidia") {
